@@ -6,8 +6,21 @@
     <title>Simulador de Black Jack</title>
 </head>
 <body>
-    <h1>Simulador de Black Jack</h1>
-    <h2>De momento la lógica la estoy creando con prompt y alerts.</h2>
-    <script src="blackjack.js"></script>
-</body>
+    <body>
+        <h1>Simulador de Black Jack</h1>
+        <div id="inicio">
+            <h2>Este es un simulador de Black Jack, ¿quieres jugar una partida?</h2>
+            <button id="botonJugar">Jugar</button>
+        </div>
+        <div id="acciones">
+            <input type="text" id="accionInput" placeholder="Nueva carta: si/no">
+            <button id="botonAccion">Confirmar</button>
+        </div>
+        <div id="juegos">
+            <input type="text" id="gameInput" placeholder="Nuevo juego: si/no">
+            <button id="botonGame">Confirmar</button>
+        </div>
+        <div id="resultado"></div>
+        <script src="blackjack.js"></script>
+    </body>
 </html>
