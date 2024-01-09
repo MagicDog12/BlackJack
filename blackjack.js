@@ -148,7 +148,10 @@ const borrarMensaje = () => {
 
 
 // Función para inicializar el mazo de cartas
-const inicializarMazo = () => {
+const inicializarMazo = async () => {
+    const resp = await fetch("/data.json");
+    const data = await resp.json()
+    console.log(data)
     const mazo = [];
     const palos = ['Corazones', 'Diamantes', 'Picas', 'Tréboles'];
     const valores = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
