@@ -151,16 +151,7 @@ const borrarMensaje = () => {
 const inicializarMazo = async () => {
     const resp = await fetch("/data.json");
     const data = await resp.json()
-    console.log(data)
-    const mazo = [];
-    const palos = ['Corazones', 'Diamantes', 'Picas', 'Tréboles'];
-    const valores = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-    for (const palo of palos) {
-        for (const valor of valores) {
-            mazo.push({ palo, valor });
-        }
-    }
-    return mazo;
+    return data.cartas;
 };
 
 // Función para mezclar el mazo
