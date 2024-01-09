@@ -1,0 +1,316 @@
+{
+    "cartas": [
+        {
+            "id": 1,
+            "palo": "Corazon",
+            "valor": "A",
+            "imagen": "c-01.png"
+        },
+        {
+            "id": 2,
+            "palo": "Corazon",
+            "valor": "2",
+            "imagen": "c-02.png"
+        },
+        {
+            "id": 3,
+            "palo": "Corazon",
+            "valor": "3",
+            "imagen": "c-03.png"
+        },
+        {
+            "id": 4,
+            "palo": "Corazon",
+            "valor": "4",
+            "imagen": "c-04.png"
+        },
+        {
+            "id": 5,
+            "palo": "Corazon",
+            "valor": "5",
+            "imagen": "c-05.png"
+        },
+        {
+            "id": 6,
+            "palo": "Corazon",
+            "valor": "6",
+            "imagen": "c-06.png"
+        },
+        {
+            "id": 7,
+            "palo": "Corazon",
+            "valor": "7",
+            "imagen": "c-07.png"
+        },
+        {
+            "id": 8,
+            "palo": "Corazon",
+            "valor": "8",
+            "imagen": "c-08.png"
+        },
+        {
+            "id": 9,
+            "palo": "Corazon",
+            "valor": "9",
+            "imagen": "c-09.png"
+        },
+        {
+            "id": 10,
+            "palo": "Corazon",
+            "valor": "10",
+            "imagen": "c-10.png"
+        },
+        {
+            "id": 11,
+            "palo": "Corazon",
+            "valor": "J",
+            "imagen": "c-11.png"
+        },
+        {
+            "id": 12,
+            "palo": "Corazon",
+            "valor": "Q",
+            "imagen": "c-12.png"
+        },
+        {
+            "id": 13,
+            "palo": "Corazon",
+            "valor": "K",
+            "imagen": "c-13.png"
+        },
+        {
+            "id": 14,
+            "palo": "Diamante",
+            "valor": "A",
+            "imagen": "d-01.png"
+        },
+        {
+            "id": 15,
+            "palo": "Diamante",
+            "valor": "2",
+            "imagen": "d-02.png"
+        },
+        {
+            "id": 16,
+            "palo": "Diamante",
+            "valor": "3",
+            "imagen": "d-03.png"
+        },
+        {
+            "id": 17,
+            "palo": "Diamante",
+            "valor": "4",
+            "imagen": "d-04.png"
+        },
+        {
+            "id": 18,
+            "palo": "Diamante",
+            "valor": "5",
+            "imagen": "d-05.png"
+        },
+        {
+            "id": 19,
+            "palo": "Diamante",
+            "valor": "6",
+            "imagen": "d-06.png"
+        },
+        {
+            "id": 20,
+            "palo": "Diamante",
+            "valor": "7",
+            "imagen": "d-07.png"
+        },
+        {
+            "id": 21,
+            "palo": "Diamante",
+            "valor": "8",
+            "imagen": "d-08.png"
+        },
+        {
+            "id": 22,
+            "palo": "Diamante",
+            "valor": "9",
+            "imagen": "d-09.png"
+        },
+        {
+            "id": 23,
+            "palo": "Diamante",
+            "valor": "10",
+            "imagen": "d-10.png"
+        },
+        {
+            "id": 24,
+            "palo": "Diamante",
+            "valor": "J",
+            "imagen": "d-11.png"
+        },
+        {
+            "id": 25,
+            "palo": "Diamante",
+            "valor": "Q",
+            "imagen": "d-12.png"
+        },
+        {
+            "id": 26,
+            "palo": "Diamante",
+            "valor": "K",
+            "imagen": "d-13.png"
+        },
+        {
+            "id": 27,
+            "palo": "Pica",
+            "valor": "A",
+            "imagen": "p-01.png"
+        },
+        {
+            "id": 28,
+            "palo": "Pica",
+            "valor": "2",
+            "imagen": "p-02.png"
+        },
+        {
+            "id": 29,
+            "palo": "Pica",
+            "valor": "3",
+            "imagen": "p-03.png"
+        },
+        {
+            "id": 30,
+            "palo": "Pica",
+            "valor": "4",
+            "imagen": "p-04.png"
+        },
+        {
+            "id": 31,
+            "palo": "Pica",
+            "valor": "5",
+            "imagen": "p-05.png"
+        },
+        {
+            "id": 32,
+            "palo": "Pica",
+            "valor": "6",
+            "imagen": "p-06.png"
+        },
+        {
+            "id": 33,
+            "palo": "Pica",
+            "valor": "7",
+            "imagen": "p-07.png"
+        },
+        {
+            "id": 34,
+            "palo": "Pica",
+            "valor": "8",
+            "imagen": "p-08.png"
+        },
+        {
+            "id": 35,
+            "palo": "Pica",
+            "valor": "9",
+            "imagen": "p-09.png"
+        },
+        {
+            "id": 36,
+            "palo": "Pica",
+            "valor": "10",
+            "imagen": "p-10.png"
+        },
+        {
+            "id": 37,
+            "palo": "Pica",
+            "valor": "J",
+            "imagen": "p-11.png"
+        },
+        {
+            "id": 38,
+            "palo": "Pica",
+            "valor": "Q",
+            "imagen": "p-12.png"
+        },
+        {
+            "id": 39,
+            "palo": "Pica",
+            "valor": "K",
+            "imagen": "p-13.png"
+        },
+        {
+            "id": 40,
+            "palo": "Trebol",
+            "valor": "A",
+            "imagen": "t-01.png"
+        },
+        {
+            "id": 41,
+            "palo": "Trebol",
+            "valor": "2",
+            "imagen": "t-02.png"
+        },
+        {
+            "id": 42,
+            "palo": "Trebol",
+            "valor": "3",
+            "imagen": "t-03.png"
+        },
+        {
+            "id": 43,
+            "palo": "Trebol",
+            "valor": "4",
+            "imagen": "t-04.png"
+        },
+        {
+            "id": 44,
+            "palo": "Trebol",
+            "valor": "5",
+            "imagen": "t-05.png"
+        },
+        {
+            "id": 45,
+            "palo": "Trebol",
+            "valor": "6",
+            "imagen": "t-06.png"
+        },
+        {
+            "id": 46,
+            "palo": "Trebol",
+            "valor": "7",
+            "imagen": "t-07.png"
+        },
+        {
+            "id": 47,
+            "palo": "Trebol",
+            "valor": "8",
+            "imagen": "t-08.png"
+        },
+        {
+            "id": 48,
+            "palo": "Trebol",
+            "valor": "9",
+            "imagen": "t-09.png"
+        },
+        {
+            "id": 49,
+            "palo": "Trebol",
+            "valor": "10",
+            "imagen": "t-10.png"
+        },
+        {
+            "id": 50,
+            "palo": "Trebol",
+            "valor": "J",
+            "imagen": "t-11.png"
+        },
+        {
+            "id": 51,
+            "palo": "Trebol",
+            "valor": "Q",
+            "imagen": "t-12.png"
+        },
+        {
+            "id": 52,
+            "palo": "Trebol",
+            "valor": "K",
+            "imagen": "t-13.png"
+        }
+    ]
+}
