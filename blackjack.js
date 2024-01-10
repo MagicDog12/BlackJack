@@ -118,8 +118,9 @@ const obtenerGameJugador = () => {
 const jugarPartida = async () => {
     let main = 'si';
 
-    const ejecutarTurnoJugador = (mensaje) => {
+    const ejecutarTurnoJugador = (titulo, mensaje, icon) => {
         mostrarMensaje(mensaje);
+        mostrarAlerta(titulo, mensaje, icon)
         return obtenerAccionJugador()
     };
 
@@ -127,7 +128,7 @@ const jugarPartida = async () => {
         const { mazo, manoJugador, manoDealer } = getGameState();
         let continuarJugando = true;
         while (getPoints(manoJugador) < 21 && continuarJugando) {
-            const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)');
+            const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)', '', 'question');
             if (accion === 'si') {
                 const nuevaCarta = dealCard(mazo);
                 manoJugador.push(nuevaCarta);
@@ -208,9 +209,19 @@ const mostrarMensaje = (mensaje) => {
     resultadoDiv.appendChild(mensajeDiv);
 };
 
+const mostrarAlerta = (title, mensaje, icon) => {
+    Swal.fire({
+        title: title,
+        text: mensaje,
+        icon: icon,
+        showConfirmButton: false,
+        timer: 1500
+    })
+};
+
 // Función para borrar mensajes en el DOM
 const borrarMensaje = () => {
-    resultadoDiv.textContent = "";
+    resultadoDiv.textContent = "Historial: \n";
 };
 
 // Función para determinar el resultado del juego
