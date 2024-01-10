@@ -9,7 +9,9 @@ const botonAccion = document.getElementById('botonAccion');
 const gameInput = document.getElementById('gameInput');
 const botonGame = document.getElementById('botonGame');
 
+//
 // Funciones relacionadas con el flujo de juego:
+//
 
 // initDeck: Void ->  [Card]
 // Inicializa el mazo de cartas
@@ -61,6 +63,33 @@ const getPoints = (hand) => {
     return total;
 };
 
+//
+// Funciones relacionadas con el almacenamiento del estado del juego
+//
+
+// getGameState: Void -> State
+// Obtiene el estado del juego desde localStorage
+const getGameState = () => {
+    const state = localStorage.getItem('estadoJuego');
+    return state ? JSON.parse(state) : null;
+};
+
+// putGameState: State -> Void
+// Guarda el estado del juego en localStorage
+const putGameState = (state) => {
+    localStorage.setItem('estadoJuego', JSON.stringify(state));
+};
+
+// deleteGameState: Void -> Void
+// Función para guardar el estado del juego en localStorage
+const deleteGameState = () => {
+    localStorage.removeItem('estadoJuego');
+};
+
+//
+// 
+// 
+
 const obtenerAccionJugador = () => {
     return new Promise(resolve => {
         const clickHandler = () => {
@@ -84,21 +113,6 @@ const obtenerGameJugador = () => {
     });
 };
 
-// Función para cargar el estado del juego desde localStorage
-const cargarEstadoJuego = () => {
-    const estadoGuardado = localStorage.getItem('estadoJuego');
-    return estadoGuardado ? JSON.parse(estadoGuardado) : null;
-};
-
-// Función para guardar el estado del juego en localStorage
-const guardarEstadoJuego = (estadoJuego) => {
-    localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
-};
-// Función para guardar el estado del juego en localStorage
-const reiniciarEstadoJuego = () => {
-    localStorage.removeItem('estadoJuego');
-};
-
 
 // Función para manejar el juego
 const jugarPartida = async () => {
@@ -110,14 +124,14 @@ const jugarPartida = async () => {
     };
 
     const turnoJugador = async () => {
-        const { mazo, manoJugador, manoDealer } = cargarEstadoJuego();
+        const { mazo, manoJugador, manoDealer } = getGameState();
         let continuarJugando = true;
         while (getPoints(manoJugador) < 21 && continuarJugando) {
             const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)');
             if (accion === 'si') {
                 const nuevaCarta = dealCard(mazo);
                 manoJugador.push(nuevaCarta);
-                guardarEstadoJuego({ mazo, manoJugador, manoDealer });
+                putGameState({ mazo, manoJugador, manoDealer });
                 mostrarEstado(manoJugador, manoDealer);
             } else {
                 console.log("no quiero otra carta")
@@ -133,7 +147,7 @@ const jugarPartida = async () => {
     while (main === 'si') {
         borrarMensaje();
         // Inicia el juego
-        let estadoJuego = cargarEstadoJuego();
+        let estadoJuego = getGameState();
         let mazo;
         let manoJugador;
         let manoDealer;
@@ -141,19 +155,19 @@ const jugarPartida = async () => {
             mazo = mixDeck(initDeck());
             manoJugador = [dealCard(mazo), dealCard(mazo)];
             manoDealer = [dealCard(mazo), dealCard(mazo)];
-            guardarEstadoJuego({ mazo, manoJugador, manoDealer });
+            putGameState({ mazo, manoJugador, manoDealer });
         } else {
             mazo = estadoJuego.mazo;
             manoJugador = estadoJuego.manoJugador;
             manoDealer = estadoJuego.manoDealer;
-            guardarEstadoJuego({ mazo, manoJugador, manoDealer });
+            putGameState({ mazo, manoJugador, manoDealer });
         }
         mostrarEstado(manoJugador, manoDealer);
 
         // Turno del jugador
         await turnoJugador();
 
-        const nuevoEstado = cargarEstadoJuego();
+        const nuevoEstado = getGameState();
         mazo = nuevoEstado.mazo;
         manoJugador = nuevoEstado.manoJugador;
         manoDealer = nuevoEstado.manoDealer;
@@ -162,7 +176,7 @@ const jugarPartida = async () => {
             console.log("jugando dealer")
             const nuevaCarta = dealCard(mazo);
             manoDealer.push(nuevaCarta);
-            guardarEstadoJuego({ mazo, manoJugador, manoDealer });
+            putGameState({ mazo, manoJugador, manoDealer });
         }
         console.log("termina turno dealer")
         // Muestra las manos finales
@@ -173,7 +187,7 @@ const jugarPartida = async () => {
         const resultado = determinarResultado(manoJugador, manoDealer);
         mostrarMensaje(resultado);
 
-        reiniciarEstadoJuego();
+        deleteGameState();
 
         // Solicita volver a jugar
         await rondaJugador();
