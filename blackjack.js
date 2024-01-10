@@ -9,6 +9,57 @@ const botonAccion = document.getElementById('botonAccion');
 const gameInput = document.getElementById('gameInput');
 const botonGame = document.getElementById('botonGame');
 
+// Funciones relacionadas con el flujo de juego:
+
+// initDeck: Void ->  [Card]
+// Inicializa el mazo de cartas
+const initDeck = async () => {
+    const resp = await fetch("/data.json");
+    const data = await resp.json()
+    return data.cartas;
+};
+
+// mixDeck: [Carta] -> [Carta]
+// Mezcla el mazo de forma aleatoria
+const mixDeck = (mazo) => {
+    for (let i = mazo.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
+    }
+    return mazo;
+};
+
+// getCardValue: Carta.valor -> int
+// Obtiene el valor de una carta
+const getCardValue = (valor) => {
+    if (valor === 'A') return 11;
+    if (['K', 'Q', 'J'].includes(valor)) return 10;
+    return parseInt(valor);
+};
+
+// dealCard: [Carta] -> int
+// Reparte una carta del mazo
+const dealCard = (mazo) => {
+    const carta = mazo.pop();
+    return carta.valor;
+};
+
+// getPoints: [Carta] -> int
+// Calcula el total de puntos de una mano
+const getPoints = (mano) => {
+    let total = 0;
+    let ases = 0;
+    for (const carta of mano) {
+        const valor = getCardValue(carta);
+        if (valor === 11) ases++;
+        total += valor;
+    }
+    while (total > 21 && ases > 0) {
+        total -= 10;
+        ases--;
+    }
+    return total;
+};
 
 const obtenerAccionJugador = () => {
     return new Promise(resolve => {
@@ -61,10 +112,10 @@ const jugarPartida = async () => {
     const turnoJugador = async () => {
         const { mazo, manoJugador, manoDealer } = cargarEstadoJuego();
         let continuarJugando = true;
-        while (calcularPuntos(manoJugador) < 21 && continuarJugando) {
+        while (getPoints(manoJugador) < 21 && continuarJugando) {
             const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)');
             if (accion === 'si') {
-                const nuevaCarta = repartirCarta(mazo);
+                const nuevaCarta = dealCard(mazo);
                 manoJugador.push(nuevaCarta);
                 guardarEstadoJuego({ mazo, manoJugador, manoDealer });
                 mostrarEstado(manoJugador, manoDealer);
@@ -87,15 +138,15 @@ const jugarPartida = async () => {
         let manoJugador;
         let manoDealer;
         if (!estadoJuego) {
-            mazo = mezclarMazo(inicializarMazo());
-            manoJugador = [repartirCarta(mazo), repartirCarta(mazo)];
-            manoDealer = [repartirCarta(mazo), repartirCarta(mazo)];
-            guardarEstadoJuego({mazo, manoJugador, manoDealer});
+            mazo = mixDeck(initDeck());
+            manoJugador = [dealCard(mazo), dealCard(mazo)];
+            manoDealer = [dealCard(mazo), dealCard(mazo)];
+            guardarEstadoJuego({ mazo, manoJugador, manoDealer });
         } else {
             mazo = estadoJuego.mazo;
             manoJugador = estadoJuego.manoJugador;
             manoDealer = estadoJuego.manoDealer;
-            guardarEstadoJuego({mazo, manoJugador, manoDealer});
+            guardarEstadoJuego({ mazo, manoJugador, manoDealer });
         }
         mostrarEstado(manoJugador, manoDealer);
 
@@ -107,16 +158,16 @@ const jugarPartida = async () => {
         manoJugador = nuevoEstado.manoJugador;
         manoDealer = nuevoEstado.manoDealer;
         // Turno del dealer
-        while (calcularPuntos(manoDealer) < 17) {
+        while (getPoints(manoDealer) < 17) {
             console.log("jugando dealer")
-            const nuevaCarta = repartirCarta(mazo);
+            const nuevaCarta = dealCard(mazo);
             manoDealer.push(nuevaCarta);
             guardarEstadoJuego({ mazo, manoJugador, manoDealer });
         }
         console.log("termina turno dealer")
         // Muestra las manos finales
-        mostrarMensaje(`Mano del jugador: ${manoJugador.join(', ')}. Total de puntos: ${calcularPuntos(manoJugador)}`);
-        mostrarMensaje(`Mano del dealer: ${manoDealer.join(', ')}. Total de puntos: ${calcularPuntos(manoDealer)}`);
+        mostrarMensaje(`Mano del jugador: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}`);
+        mostrarMensaje(`Mano del dealer: ${manoDealer.join(', ')}. Total de puntos: ${getPoints(manoDealer)}`);
 
         // Determina el resultado del juego
         const resultado = determinarResultado(manoJugador, manoDealer);
@@ -146,59 +197,10 @@ const borrarMensaje = () => {
     resultadoDiv.textContent = "";
 };
 
-
-// Función para inicializar el mazo de cartas
-const inicializarMazo = async () => {
-    const resp = await fetch("/data.json");
-    const data = await resp.json()
-    return data.cartas;
-};
-
-// Función para mezclar el mazo
-const mezclarMazo = (mazo) => {
-    for (let i = mazo.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
-    }
-    return mazo;
-};
-
-// Función para obtener el valor de una carta
-const valorCarta = (carta) => {
-    if (carta === 'A') return 11;
-    if (['K', 'Q', 'J'].includes(carta)) return 10;
-    return parseInt(carta);
-};
-
-// Función para repartir una carta
-const repartirCarta = (mazo) => {
-    const carta = mazo.pop();
-    return carta.valor;
-};
-
-// Función para calcular el total de puntos de una mano
-const calcularPuntos = (mano) => {
-    let total = 0;
-    let ases = 0;
-
-    for (const carta of mano) {
-        const valor = valorCarta(carta);
-        if (valor === 11) ases++;
-        total += valor;
-    }
-
-    while (total > 21 && ases > 0) {
-        total -= 10;
-        ases--;
-    }
-
-    return total;
-};
-
 // Función para determinar el resultado del juego
 const determinarResultado = (manoJugador, manoDealer) => {
-    const puntosJugador = calcularPuntos(manoJugador);
-    const puntosDealer = calcularPuntos(manoDealer);
+    const puntosJugador = getPoints(manoJugador);
+    const puntosDealer = getPoints(manoDealer);
 
     if (puntosJugador > 21) {
         return 'Has perdido. Te pasaste de 21.';
@@ -215,5 +217,5 @@ const determinarResultado = (manoJugador, manoDealer) => {
 
 // Función para mostrar el estado del juego
 const mostrarEstado = (manoJugador, manoDealer) => {
-    mostrarMensaje(`Tus cartas: ${manoJugador.join(', ')}. Total de puntos: ${calcularPuntos(manoJugador)}. Carta visible del dealer: ${manoDealer[0]}`);
+    mostrarMensaje(`Tus cartas: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}. Carta visible del dealer: ${manoDealer[0]}`);
 };
