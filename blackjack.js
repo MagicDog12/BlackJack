@@ -1,14 +1,5 @@
 "use strict";
 
-// Obtener referencias a elementos del DOM
-const botonJugar = document.getElementById('botonJugar');
-const inputNombre = document.getElementById('inputNombre');
-const resultadoDiv = document.getElementById('resultado');
-const accionInput = document.getElementById('accionInput');
-const botonAccion = document.getElementById('botonAccion');
-const gameInput = document.getElementById('gameInput');
-const botonGame = document.getElementById('botonGame');
-
 //
 // Funciones relacionadas con el flujo de juego:
 //
@@ -46,7 +37,7 @@ const dealCard = (deck) => {
     return card.value;
 };
 
-// getPoints: [Carta] -> int
+// getPoints: [Card] -> int
 // Calcula el total de puntos de una mano
 const getPoints = (hand) => {
     let total = 0;
@@ -61,6 +52,24 @@ const getPoints = (hand) => {
         asCount--;
     }
     return total;
+};
+
+// determinarResultado: [Card] [Card] -> string
+// Determina el resultado del juego dado la mano del jugador y el dealer
+const determinarResultado = (manoJugador, manoDealer) => {
+    const puntosJugador = getPoints(manoJugador);
+    const puntosDealer = getPoints(manoDealer);
+    if (puntosJugador > 21) {
+        return 'Has perdido. Te pasaste de 21.';
+    } else if (puntosDealer > 21) {
+        return '¡Ganaste! El dealer se pasó de 21.';
+    } else if (puntosJugador > puntosDealer) {
+        return '¡Ganaste! Tienes más puntos que el dealer.';
+    } else if (puntosDealer > puntosJugador) {
+        return 'Has perdido. El dealer tiene más puntos que tú.';
+    } else {
+        return 'Es un empate.';
+    }
 };
 
 //
@@ -86,35 +95,81 @@ const deleteGameState = () => {
     localStorage.removeItem('estadoJuego');
 };
 
+// mostrarEstado: [Card] [Card] -> Void
+// Muestra el estado del juego
+const mostrarEstado = (manoJugador, manoDealer) => {
+    mostrarMensaje(`Tus cartas: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}. Carta visible del dealer: ${manoDealer[0]}`);
+};
+
 //
-// 
+// Funciones relacionadas con el uso del DOM
 // 
 
+// Obtener referencias a elementos del DOM
+const playButton = document.getElementById('playButton');
+const historialDiv = document.getElementById('historial');
+const accionInput = document.getElementById('accionInput');
+const accionButton = document.getElementById('accionButton');
+const gameInput = document.getElementById('gameInput');
+const gameButton = document.getElementById('gameButton');
+
+// Asignar evento al botón para iniciar el juego
+playButton.addEventListener('click', jugarPartida);
+
+// mostrarMensaje: string -> Void
+// Muestra los mensajes en el historial
+const mostrarMensaje = (mensaje) => {
+    const mensajeDiv = document.createElement('p');
+    mensajeDiv.textContent = mensaje;
+    historialDiv.appendChild(mensajeDiv);
+};
+
+// borrarMensaje: Void -> Void
+// Borra los mensajes del historial
+const borrarMensaje = () => {
+    historialDiv.textContent = "Historial: \n";
+};
+
+// mostrarAlerta: string string string -> Void
+// Muestra una alerta usando sweet alerta con un titulo, mensaje e icono.
+const mostrarAlerta = (title, mensaje, icon) => {
+    Swal.fire({
+        title: title,
+        text: mensaje,
+        icon: icon,
+        showConfirmButton: false,
+        timer: 1500
+    })
+};
+
+// obtenerAccionJugador: Void -> Promise
+// Obtiene la accion de un jugador para saber si es que va a agregar una nueva carta
 const obtenerAccionJugador = () => {
     return new Promise(resolve => {
         const clickHandler = () => {
             const accion = accionInput.value.toLowerCase().trim();
             resolve(accion);
-            botonAccion.removeEventListener('click', clickHandler); // Elimina el listener después de la jugada
+            accionButton.removeEventListener('click', clickHandler); // Elimina el listener después de la jugada
         };
-        botonAccion.addEventListener('click', clickHandler);
+        accionButton.addEventListener('click', clickHandler);
     });
 };
 
-// Función para obtener el juego del jugador
+// obtenerGameJugador: Void -> Promise
+// Obtiene el juego de un jugador para saber si es que va a querer jugar otra partida
 const obtenerGameJugador = () => {
     return new Promise(resolve => {
         const clickHandler = () => {
             const game = gameInput.value.toLowerCase().trim();
             resolve(game);
-            botonGame.removeEventListener('click', clickHandler);
+            gameButton.removeEventListener('click', clickHandler);
         };
-        botonGame.addEventListener('click', clickHandler);
+        gameButton.addEventListener('click', clickHandler);
     });
 };
 
-
-// Función para manejar el juego
+// jugarPartida: Void -> Void
+// Simula una partida del juego de Black Jack
 const jugarPartida = async () => {
     let main = 'si';
 
@@ -197,52 +252,4 @@ const jugarPartida = async () => {
         main = gameInput.value.toLowerCase().trim();
     }
     mostrarMensaje('Espero que te haya gustado el juego');
-};
-
-// Asignar evento al botón para iniciar el juego
-botonJugar.addEventListener('click', jugarPartida);
-
-// Función para mostrar mensajes en el DOM
-const mostrarMensaje = (mensaje) => {
-    const mensajeDiv = document.createElement('p');
-    mensajeDiv.textContent = mensaje;
-    resultadoDiv.appendChild(mensajeDiv);
-};
-
-const mostrarAlerta = (title, mensaje, icon) => {
-    Swal.fire({
-        title: title,
-        text: mensaje,
-        icon: icon,
-        showConfirmButton: false,
-        timer: 1500
-    })
-};
-
-// Función para borrar mensajes en el DOM
-const borrarMensaje = () => {
-    resultadoDiv.textContent = "Historial: \n";
-};
-
-// Función para determinar el resultado del juego
-const determinarResultado = (manoJugador, manoDealer) => {
-    const puntosJugador = getPoints(manoJugador);
-    const puntosDealer = getPoints(manoDealer);
-
-    if (puntosJugador > 21) {
-        return 'Has perdido. Te pasaste de 21.';
-    } else if (puntosDealer > 21) {
-        return '¡Ganaste! El dealer se pasó de 21.';
-    } else if (puntosJugador > puntosDealer) {
-        return '¡Ganaste! Tienes más puntos que el dealer.';
-    } else if (puntosDealer > puntosJugador) {
-        return 'Has perdido. El dealer tiene más puntos que tú.';
-    } else {
-        return 'Es un empate.';
-    }
-};
-
-// Función para mostrar el estado del juego
-const mostrarEstado = (manoJugador, manoDealer) => {
-    mostrarMensaje(`Tus cartas: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}. Carta visible del dealer: ${manoDealer[0]}`);
 };
