@@ -145,7 +145,9 @@ const jugarPartida = async () => {
     };
 
     while (main === 'si') {
+        // Se reinicia el juego
         borrarMensaje();
+        deleteGameState();
         // Inicia el juego
         let estadoJuego = getGameState();
         let mazo;
