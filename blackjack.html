@@ -1,28 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Simulador de Black Jack</title>
 </head>
-<body>
-    <body>
-        <h1>Simulador de Black Jack</h1>
-        <div id="inicio">
-            <h2>Este es un simulador de Black Jack, ¿quieres jugar una partida?</h2>
-            <button id="botonJugar">Jugar</button>
+
+<body class="p-4 m-4">
+    <h1 class="h1 text-center">Simulador de Black Jack</h1>
+    <div id="inicio">
+        <h2 class="h2 text-center">¿quieres jugar una partida?</h2>
+        <button id="botonJugar" class="btn btn-outline-info position-relative top-50 start-50">Jugar</button>
+    </div>
+    <div id="acciones">
+        <input type="text" id="accionInput" placeholder="Nueva carta: si/no">
+        <button id="botonAccion" class="btn btn-outline-success">Confirmar</button>
+    </div>
+    <div id="juegos">
+        <input type="text" id="gameInput" placeholder="Nuevo juego: si/no">
+        <button id="botonGame" class="btn btn-outline-success">Confirmar</button>
+    </div>
+    <div id="resultado"></div>
+    <div class="container text-center">
+        <div class="row">
+            <h3 class="h3"> Cartas del jugador</h3>
         </div>
-        <div id="acciones">
-            <input type="text" id="accionInput" placeholder="Nueva carta: si/no">
-            <button id="botonAccion">Confirmar</button>
+        <div class="row">
+            <div class="col">
+                <img src="/img/default-1.png" class="img-thumbnail" alt="carta">
+            </div>
+            <div class="col">
+                <img src="/img/default-1.png" class="img-thumbnail" alt="carta">
+            </div>
         </div>
-        <div id="juegos">
-            <input type="text" id="gameInput" placeholder="Nuevo juego: si/no">
-            <button id="botonGame">Confirmar</button>
+        <br>
+        <div class="row">
+            <h3 class="h3"> Cartas del dealer</h3>
+            <div class="col">
+                <img src="/img/default-2.png" class="img-thumbnail" alt="carta">
+            </div>
+            <div class="col">
+                <img src="/img/default-2.png" class="img-thumbnail" alt="carta">
+            </div>
         </div>
-        <div id="resultado"></div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="blackjack.js"></script>
-    </body>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="blackjack.js"></script>
+</body>
+
 </html>
