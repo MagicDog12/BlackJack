@@ -152,7 +152,7 @@ const jugarPartida = async () => {
         let manoJugador;
         let manoDealer;
         if (!estadoJuego) {
-            mazo = mixDeck(initDeck());
+            mazo = mixDeck(await initDeck());
             manoJugador = [dealCard(mazo), dealCard(mazo)];
             manoDealer = [dealCard(mazo), dealCard(mazo)];
             putGameState({ mazo, manoJugador, manoDealer });
