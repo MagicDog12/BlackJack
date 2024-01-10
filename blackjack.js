@@ -16,47 +16,47 @@ const botonGame = document.getElementById('botonGame');
 const initDeck = async () => {
     const resp = await fetch("/data.json");
     const data = await resp.json()
-    return data.cartas;
+    return data.cards;
 };
 
-// mixDeck: [Carta] -> [Carta]
+// mixDeck: [Card] -> [Card]
 // Mezcla el mazo de forma aleatoria
-const mixDeck = (mazo) => {
-    for (let i = mazo.length - 1; i > 0; i--) {
+const mixDeck = (deck) => {
+    for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
+        [deck[i], deck[j]] = [deck[j], deck[i]];
     }
-    return mazo;
+    return deck;
 };
 
-// getCardValue: Carta.valor -> int
+// getCardValue: Card.value -> int
 // Obtiene el valor de una carta
-const getCardValue = (valor) => {
-    if (valor === 'A') return 11;
-    if (['K', 'Q', 'J'].includes(valor)) return 10;
-    return parseInt(valor);
+const getCardValue = (value) => {
+    if (value === 'A') return 11;
+    if (['K', 'Q', 'J'].includes(value)) return 10;
+    return parseInt(value);
 };
 
-// dealCard: [Carta] -> int
+// dealCard: [Card] -> int
 // Reparte una carta del mazo
-const dealCard = (mazo) => {
-    const carta = mazo.pop();
-    return carta.valor;
+const dealCard = (deck) => {
+    const card = deck.pop();
+    return card.value;
 };
 
 // getPoints: [Carta] -> int
 // Calcula el total de puntos de una mano
-const getPoints = (mano) => {
+const getPoints = (hand) => {
     let total = 0;
-    let ases = 0;
-    for (const carta of mano) {
-        const valor = getCardValue(carta);
-        if (valor === 11) ases++;
-        total += valor;
+    let asCount = 0;
+    for (const card of hand) {
+        const value = getCardValue(card);
+        if (value === 11) asCount++;
+        total += value;
     }
-    while (total > 21 && ases > 0) {
+    while (total > 21 && asCount > 0) {
         total -= 10;
-        ases--;
+        asCount--;
     }
     return total;
 };
