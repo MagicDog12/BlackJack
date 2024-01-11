@@ -131,7 +131,15 @@ const deleteGameState = () => {
 // showState: [Card] [Card] -> Void
 // Muestra el estado del juego
 const showState = (playerHand, dealerHand) => {
-    showMessage(`Tus cartas: ${playerHand.join(', ')}. Total de puntos: ${getPoints(playerHand)}. Carta visible del dealer: ${dealerHand[0]}`);
+    const playerHandValues = [];
+    for (const card of playerHand) {
+        playerHandValues.push(card.value);
+    }
+    const dealerHandValues = [];
+    for (const card of dealerHand) {
+        dealerHandValues.push(card.value);
+    }
+    showMessage(`Tus cartas: ${playerHandValues.join(', ')}. Total de puntos: ${getPoints(playerHand)}. Carta visible del dealer: ${dealerHandValues[0]}`);
 };
 
 //
@@ -179,20 +187,28 @@ const playGame = async () => {
         }
         console.log("termina turno dealer")
         // Muestra las manos finales
-        showMessage(`Mano del jugador: ${playerHand.join(', ')}. Total de puntos: ${getPoints(playerHand)}`);
-        showMessage(`Mano del dealer: ${dealerHand.join(', ')}. Total de puntos: ${getPoints(dealerHand)}`);
+        const playerHandValues = [];
+        for (const card of playerHand) {
+            playerHandValues.push(card.value);
+        }
+        const dealerHandValues = [];
+        for (const card of dealerHand) {
+            dealerHandValues.push(card.value);
+        }
+        showMessage(`Mano del jugador: ${playerHandValues.join(', ')}. Total de puntos: ${getPoints(playerHand)}`);
+        showMessage(`Mano del dealer: ${dealerHandValues.join(', ')}. Total de puntos: ${getPoints(dealerHand)}`);
 
         // Determina el resultado del juego
-        const { messageResult, winResult } = getResult(playerHand, dealerHand);
-        showMessage(messageResult);
+        const { message, win } = getResult(playerHand, dealerHand);
+        showMessage(message);
         deleteGameState();
-        if (winResult) {
-            showAlert('Felicidades:', messageResult, 'success');
+        if (win) {
+            showAlert('Felicidades:', message, 'success');
             // Solicita volver a jugar
             await playerRound();
             main = gameInput.value.toLowerCase().trim();
         } else {
-            showAlert('Lo siento', messageResult, 'error');
+            showAlert('Lo siento', message, 'error');
             // Solicita volver a jugar
             await playerRound();
             main = gameInput.value.toLowerCase().trim();
@@ -242,7 +258,7 @@ const showAlert = (title, message, icon) => {
         text: message,
         icon: icon,
         showConfirmButton: false,
-        timer: 1500
+        timer: 2500
     })
 };
 
