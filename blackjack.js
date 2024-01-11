@@ -155,6 +155,7 @@ const playGame = async () => {
         // Se reinicia el juego
         deleteMessage();
         deleteGameState();
+        resetCardsImg();
         // Inicia el juego
         let gameState = getGameState();
         let deck, playerHand, dealerHand;
@@ -203,7 +204,7 @@ const playGame = async () => {
         showMessage(message);
         deleteGameState();
         if (win) {
-            showAlert('Felicidades:', message, 'success');
+            showAlert('Felicidades', message, 'success');
             // Solicita volver a jugar
             await playerRound();
             main = gameInput.value.toLowerCase().trim();
@@ -216,6 +217,7 @@ const playGame = async () => {
     }
     deleteMessage();
     deleteGameState();
+    resetCardsImg();
     showAlert('Gracias por jugar', 'Espero que te haya gustado el juego', 'info');
 };
 
@@ -319,20 +321,34 @@ const resetCardsImg = () => {
 const createDefaultCards = () => {
     let divDefault1 = document.createElement('div');
     let divDefault2 = document.createElement('div');
+    let divDefault3 = document.createElement('div');
+    let divDefault4 = document.createElement('div');
     divDefault1.classList.add('col');
     divDefault2.classList.add('col');
+    divDefault3.classList.add('col');
+    divDefault4.classList.add('col');
     let imgDefault1 = document.createElement('img');
     let imgDefault2 = document.createElement('img');
+    let imgDefault3 = document.createElement('img');
+    let imgDefault4 = document.createElement('img');
     imgDefault1.src = "/img/default-1.png";
-    imgDefault2.src = "/img/default-2.png";
+    imgDefault2.src = "/img/default-1.png";
+    imgDefault3.src = "/img/default-2.png";
+    imgDefault4.src = "/img/default-2.png";
     imgDefault1.classList.add("img-thumbnail");
     imgDefault2.classList.add("img-thumbnail");
+    imgDefault3.classList.add("img-thumbnail");
+    imgDefault4.classList.add("img-thumbnail");
     imgDefault1.alt = "Carta por defecto";
     imgDefault2.alt = "Carta por defecto";
-    divDefault1.appendChild(imgDefault1);
+    imgDefault3.alt = "Carta por defecto";
+    imgDefault4.alt = "Carta por defecto";
     divDefault1.appendChild(imgDefault1);
     divDefault2.appendChild(imgDefault2);
-    divDefault2.appendChild(imgDefault2);
+    divDefault3.appendChild(imgDefault3);
+    divDefault4.appendChild(imgDefault4);
     playerCardsDiv.appendChild(divDefault1);
-    dealerCardsDiv.appendChild(divDefault2)
+    playerCardsDiv.appendChild(divDefault2);
+    dealerCardsDiv.appendChild(divDefault3);
+    dealerCardsDiv.appendChild(divDefault4);
 };
