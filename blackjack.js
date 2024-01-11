@@ -97,7 +97,7 @@ const playerTurn = async () => {
                 "img": "default-2.png"
             }
             showState(playerHand, [dealerHand[0], defaultDealerCard]);
-            showImgs(playerHand, dealerHand);
+            showImgs(playerHand, [dealerHand[0], defaultDealerCard]);
         } else {
             console.log("no quiero otra carta")
             continuePlaying = false;
