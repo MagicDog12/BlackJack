@@ -211,6 +211,8 @@ const accionInput = document.getElementById('accionInput');
 const accionButton = document.getElementById('accionButton');
 const gameInput = document.getElementById('gameInput');
 const gameButton = document.getElementById('gameButton');
+const playerCardsDiv = document.getElementById('playerCards');
+const dealerCardsDiv = document.getElementById('dealerCards');
 
 // Asignar evento al botón para iniciar el juego
 playButton.addEventListener('click', playGame);
@@ -265,4 +267,18 @@ const obtenerGameJugador = () => {
         };
         gameButton.addEventListener('click', clickHandler);
     });
+};
+
+// addCardImg: Card HTMLElement -> Void
+// Crea y agrega una carta al DOM
+const addCardImg = (card, contenedor) => {
+    const {cardKind, cardValue, cardImg} = card;
+    let newDiv = document.createElement('div');
+    newDiv.classList.add('col');
+    let newImg = document.createElement('img');
+    newImg.src = cardImg;
+    newImg.classList.add("img-thumbnail");
+    newImg.alt = "Carta " + cardValue + " de " + cardKind;
+    newDiv.appendChild(newImg);
+    contenedor.appendChild(newDiv);
 };
