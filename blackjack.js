@@ -72,6 +72,40 @@ const determinarResultado = (manoJugador, manoDealer) => {
     }
 };
 
+// ejecutarTurnoJugador: string string string -> Function
+// Ejecuta el turno de un jugador dado el titulo, mensaje e icono para mostrar el mensaje
+const ejecutarTurnoJugador = (titulo, mensaje, icon) => {
+    mostrarMensaje(mensaje);
+    mostrarAlerta(titulo, mensaje, icon)
+    return obtenerAccionJugador()
+};
+
+// turnoJugador: Void -> Void
+// 
+const turnoJugador = async () => {
+    const { mazo, manoJugador, manoDealer } = getGameState();
+    let continuarJugando = true;
+    while (getPoints(manoJugador) < 21 && continuarJugando) {
+        const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)', '', 'question');
+        if (accion === 'si') {
+            const nuevaCarta = dealCard(mazo);
+            manoJugador.push(nuevaCarta);
+            putGameState({ mazo, manoJugador, manoDealer });
+            mostrarEstado(manoJugador, manoDealer);
+        } else {
+            console.log("no quiero otra carta")
+            continuarJugando = false;
+        }
+    }
+};
+
+// rondaJugador: Void -> Void
+//
+const rondaJugador = async () => {
+    mostrarMensaje('¿Quieres volver a jugar? (si/no)');
+    await obtenerGameJugador();
+};
+
 //
 // Funciones relacionadas con el almacenamiento del estado del juego
 //
@@ -172,33 +206,6 @@ const obtenerGameJugador = () => {
 // Simula una partida del juego de Black Jack
 const jugarPartida = async () => {
     let main = 'si';
-
-    const ejecutarTurnoJugador = (titulo, mensaje, icon) => {
-        mostrarMensaje(mensaje);
-        mostrarAlerta(titulo, mensaje, icon)
-        return obtenerAccionJugador()
-    };
-
-    const turnoJugador = async () => {
-        const { mazo, manoJugador, manoDealer } = getGameState();
-        let continuarJugando = true;
-        while (getPoints(manoJugador) < 21 && continuarJugando) {
-            const accion = await ejecutarTurnoJugador('¿Quieres pedir otra carta? (si/no)', '', 'question');
-            if (accion === 'si') {
-                const nuevaCarta = dealCard(mazo);
-                manoJugador.push(nuevaCarta);
-                putGameState({ mazo, manoJugador, manoDealer });
-                mostrarEstado(manoJugador, manoDealer);
-            } else {
-                console.log("no quiero otra carta")
-                continuarJugando = false;
-            }
-        }
-    };
-    const rondaJugador = async () => {
-        mostrarMensaje('¿Quieres volver a jugar? (si/no)');
-        await obtenerGameJugador();
-    };
 
     while (main === 'si') {
         // Se reinicia el juego
