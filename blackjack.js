@@ -136,6 +136,69 @@ const mostrarEstado = (manoJugador, manoDealer) => {
 };
 
 //
+// Juego principal
+//
+
+// jugarPartida: Void -> Void
+// Simula una partida del juego de Black Jack
+const jugarPartida = async () => {
+    let main = 'si';
+
+    while (main === 'si') {
+        // Se reinicia el juego
+        borrarMensaje();
+        deleteGameState();
+        // Inicia el juego
+        let estadoJuego = getGameState();
+        let mazo;
+        let manoJugador;
+        let manoDealer;
+        if (!estadoJuego) {
+            mazo = mixDeck(await initDeck());
+            manoJugador = [dealCard(mazo), dealCard(mazo)];
+            manoDealer = [dealCard(mazo), dealCard(mazo)];
+            putGameState({ mazo, manoJugador, manoDealer });
+        } else {
+            mazo = estadoJuego.mazo;
+            manoJugador = estadoJuego.manoJugador;
+            manoDealer = estadoJuego.manoDealer;
+            putGameState({ mazo, manoJugador, manoDealer });
+        }
+        mostrarEstado(manoJugador, manoDealer);
+
+        // Turno del jugador
+        await turnoJugador();
+
+        const nuevoEstado = getGameState();
+        mazo = nuevoEstado.mazo;
+        manoJugador = nuevoEstado.manoJugador;
+        manoDealer = nuevoEstado.manoDealer;
+        // Turno del dealer
+        while (getPoints(manoDealer) < 17) {
+            console.log("jugando dealer")
+            const nuevaCarta = dealCard(mazo);
+            manoDealer.push(nuevaCarta);
+            putGameState({ mazo, manoJugador, manoDealer });
+        }
+        console.log("termina turno dealer")
+        // Muestra las manos finales
+        mostrarMensaje(`Mano del jugador: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}`);
+        mostrarMensaje(`Mano del dealer: ${manoDealer.join(', ')}. Total de puntos: ${getPoints(manoDealer)}`);
+
+        // Determina el resultado del juego
+        const resultado = determinarResultado(manoJugador, manoDealer);
+        mostrarMensaje(resultado);
+
+        deleteGameState();
+
+        // Solicita volver a jugar
+        await rondaJugador();
+        main = gameInput.value.toLowerCase().trim();
+    }
+    mostrarMensaje('Espero que te haya gustado el juego');
+};
+
+//
 // Funciones relacionadas con el uso del DOM
 // 
 
@@ -200,63 +263,4 @@ const obtenerGameJugador = () => {
         };
         gameButton.addEventListener('click', clickHandler);
     });
-};
-
-// jugarPartida: Void -> Void
-// Simula una partida del juego de Black Jack
-const jugarPartida = async () => {
-    let main = 'si';
-
-    while (main === 'si') {
-        // Se reinicia el juego
-        borrarMensaje();
-        deleteGameState();
-        // Inicia el juego
-        let estadoJuego = getGameState();
-        let mazo;
-        let manoJugador;
-        let manoDealer;
-        if (!estadoJuego) {
-            mazo = mixDeck(await initDeck());
-            manoJugador = [dealCard(mazo), dealCard(mazo)];
-            manoDealer = [dealCard(mazo), dealCard(mazo)];
-            putGameState({ mazo, manoJugador, manoDealer });
-        } else {
-            mazo = estadoJuego.mazo;
-            manoJugador = estadoJuego.manoJugador;
-            manoDealer = estadoJuego.manoDealer;
-            putGameState({ mazo, manoJugador, manoDealer });
-        }
-        mostrarEstado(manoJugador, manoDealer);
-
-        // Turno del jugador
-        await turnoJugador();
-
-        const nuevoEstado = getGameState();
-        mazo = nuevoEstado.mazo;
-        manoJugador = nuevoEstado.manoJugador;
-        manoDealer = nuevoEstado.manoDealer;
-        // Turno del dealer
-        while (getPoints(manoDealer) < 17) {
-            console.log("jugando dealer")
-            const nuevaCarta = dealCard(mazo);
-            manoDealer.push(nuevaCarta);
-            putGameState({ mazo, manoJugador, manoDealer });
-        }
-        console.log("termina turno dealer")
-        // Muestra las manos finales
-        mostrarMensaje(`Mano del jugador: ${manoJugador.join(', ')}. Total de puntos: ${getPoints(manoJugador)}`);
-        mostrarMensaje(`Mano del dealer: ${manoDealer.join(', ')}. Total de puntos: ${getPoints(manoDealer)}`);
-
-        // Determina el resultado del juego
-        const resultado = determinarResultado(manoJugador, manoDealer);
-        mostrarMensaje(resultado);
-
-        deleteGameState();
-
-        // Solicita volver a jugar
-        await rondaJugador();
-        main = gameInput.value.toLowerCase().trim();
-    }
-    mostrarMensaje('Espero que te haya gustado el juego');
 };
