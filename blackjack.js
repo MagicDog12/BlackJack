@@ -185,15 +185,14 @@ const playGame = async () => {
         // Determina el resultado del juego
         const { messageResult, winResult } = getResult(playerHand, dealerHand);
         showMessage(messageResult);
+        deleteGameState();
         if (winResult) {
             showAlert('Felicidades:', messageResult, 'success');
-            deleteGameState();
             // Solicita volver a jugar
             await playerRound();
             main = gameInput.value.toLowerCase().trim();
         } else {
             showAlert('Lo siento', messageResult, 'error');
-            deleteGameState();
             // Solicita volver a jugar
             await playerRound();
             main = gameInput.value.toLowerCase().trim();
