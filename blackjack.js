@@ -150,9 +150,7 @@ const playGame = async () => {
         deleteGameState();
         // Inicia el juego
         let estadoJuego = getGameState();
-        let mazo;
-        let manoJugador;
-        let manoDealer;
+        let mazo, manoJugador, manoDealer;
         if (!estadoJuego) {
             mazo = mixDeck(await initDeck());
             manoJugador = [dealCard(mazo), dealCard(mazo)];
@@ -281,4 +279,39 @@ const addCardImg = (card, contenedor) => {
     newImg.alt = "Carta " + cardValue + " de " + cardKind;
     newDiv.appendChild(newImg);
     contenedor.appendChild(newDiv);
+};
+
+// resetCardsImg: Void -> Void
+// Borra todas las cartas y pone las cartas por defecto en el DOM
+const resetCardsImg = () => {
+    while(playerCardsDiv.firstChild) {
+        playerCardsDiv.removeChild(playerCardsDiv.firstChild);
+    }
+    while(dealerCardsDiv.firstChild) {
+        dealerCardsDiv.removeChild(dealerCardsDiv.firstChild);
+    }
+    createDefaultCards();
+};
+
+// createDefaultCards: Void -> Void
+// Crea las cartas por defecto y las agrega a los contenedores
+const createDefaultCards = () => {
+    let divDefault1 = document.createElement('div');
+    let divDefault2 = document.createElement('div');
+    divDefault1.classList.add('col');
+    divDefault2.classList.add('col');
+    let imgDefault1 = document.createElement('img');
+    let imgDefault2 = document.createElement('img');
+    imgDefault1.src = "/img/default-1.png";
+    imgDefault2.src = "/img/default-2.png";
+    imgDefault1.classList.add("img-thumbnail");
+    imgDefault2.classList.add("img-thumbnail");
+    imgDefault1.alt = "Carta por defecto";
+    imgDefault2.alt = "Carta por defecto";
+    divDefault1.appendChild(imgDefault1);
+    divDefault1.appendChild(imgDefault1);
+    divDefault2.appendChild(imgDefault2);
+    divDefault2.appendChild(imgDefault2);
+    playerCardsDiv.appendChild(divDefault1);
+    dealerCardsDiv.appendChild(divDefault2)
 };
