@@ -195,7 +195,9 @@ const playGame = async () => {
         await rondaJugador();
         main = gameInput.value.toLowerCase().trim();
     }
-    mostrarMensaje('Espero que te haya gustado el juego');
+    borrarMensaje();
+    deleteGameState();
+    mostrarAlerta('Gracias por jugar', 'Espero que te haya gustado el juego', 'info');
 };
 
 //
