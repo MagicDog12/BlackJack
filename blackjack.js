@@ -22,19 +22,19 @@ const mixDeck = (deck) => {
     return deck;
 };
 
-// getCardValue: Card.value -> int
+// getCardValue: Card -> int
 // Obtiene el valor de una carta
-const getCardValue = (value) => {
+const getCardValue = (card) => {
+    const value = card.value;
     if (value === 'A') return 11;
     if (['K', 'Q', 'J'].includes(value)) return 10;
     return parseInt(value);
 };
 
-// dealCard: [Card] -> int
+// dealCard: [Card] -> Card
 // Reparte una carta del mazo
 const dealCard = (deck) => {
-    const card = deck.pop();
-    return card.value;
+    return deck.pop();;
 };
 
 // getPoints: [Card] -> int
@@ -54,21 +54,21 @@ const getPoints = (hand) => {
     return total;
 };
 
-// getResult: [Card] [Card] -> string
+// getResult: [Card] [Card] -> string bool
 // Determina el resultado del juego dado la mano del jugador y el dealer
 const getResult = (playerHand, dealerHand) => {
     const playerPoints = getPoints(playerHand);
     const dealerPoints = getPoints(dealerHand);
     if (playerPoints > 21) {
-        return 'Has perdido. Te pasaste de 21.';
+        return { message: 'Has perdido. Te pasaste de 21.', win: false };
     } else if (dealerPoints > 21) {
-        return '¡Ganaste! El dealer se pasó de 21.';
+        return { message: '¡Ganaste! El dealer se pasó de 21.', win: true };
     } else if (playerPoints > dealerPoints) {
-        return '¡Ganaste! Tienes más puntos que el dealer.';
+        return { message: '¡Ganaste! Tienes más puntos que el dealer.', win: true };
     } else if (dealerPoints > playerPoints) {
-        return 'Has perdido. El dealer tiene más puntos que tú.';
+        return { message: 'Has perdido. El dealer tiene más puntos que tú.', win: false };
     } else {
-        return 'Es un empate.';
+        return { message: 'Es un empate.', win: true };
     }
 };
 
@@ -183,14 +183,21 @@ const playGame = async () => {
         showMessage(`Mano del dealer: ${dealerHand.join(', ')}. Total de puntos: ${getPoints(dealerHand)}`);
 
         // Determina el resultado del juego
-        const result = getResult(playerHand, dealerHand);
-        showMessage(result);
-
-        deleteGameState();
-
-        // Solicita volver a jugar
-        await playerRound();
-        main = gameInput.value.toLowerCase().trim();
+        const { messageResult, winResult } = getResult(playerHand, dealerHand);
+        showMessage(messageResult);
+        if (winResult) {
+            showAlert('Felicidades:', messageResult, 'success');
+            deleteGameState();
+            // Solicita volver a jugar
+            await playerRound();
+            main = gameInput.value.toLowerCase().trim();
+        } else {
+            showAlert('Lo siento', messageResult, 'error');
+            deleteGameState();
+            // Solicita volver a jugar
+            await playerRound();
+            main = gameInput.value.toLowerCase().trim();
+        }
     }
     deleteMessage();
     deleteGameState();
@@ -269,7 +276,7 @@ const getPlayerGame = () => {
 // addCardImg: Card HTMLElement -> Void
 // Crea y agrega una carta al DOM
 const addCardImg = (card, container) => {
-    const {cardKind, cardValue, cardImg} = card;
+    const { cardKind, cardValue, cardImg } = card;
     let newDiv = document.createElement('div');
     newDiv.classList.add('col');
     let newImg = document.createElement('img');
@@ -283,10 +290,10 @@ const addCardImg = (card, container) => {
 // resetCardsImg: Void -> Void
 // Borra todas las cartas y pone las cartas por defecto en el DOM
 const resetCardsImg = () => {
-    while(playerCardsDiv.firstChild) {
+    while (playerCardsDiv.firstChild) {
         playerCardsDiv.removeChild(playerCardsDiv.firstChild);
     }
-    while(dealerCardsDiv.firstChild) {
+    while (dealerCardsDiv.firstChild) {
         dealerCardsDiv.removeChild(dealerCardsDiv.firstChild);
     }
     createDefaultCards();
