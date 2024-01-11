@@ -90,7 +90,14 @@ const playerTurn = async () => {
             const newCard = dealCard(deck);
             playerHand.push(newCard);
             putGameState({ deck, playerHand, dealerHand });
-            showState(playerHand, dealerHand);
+            const defaultDealerCard = {
+                "id": 53,
+                "kind": "Default",
+                "value": "0",
+                "img": "default-2.png"
+            }
+            showState(playerHand, [dealerHand[0], defaultDealerCard]);
+            showImgs(playerHand, dealerHand);
         } else {
             console.log("no quiero otra carta")
             continuePlaying = false;
@@ -137,9 +144,11 @@ const showState = (playerHand, dealerHand) => {
     }
     const dealerHandValues = [];
     for (const card of dealerHand) {
-        dealerHandValues.push(card.value);
+        if (card.value !== "0") {
+            dealerHandValues.push(card.value);
+        }
     }
-    showMessage(`Tus cartas: ${playerHandValues.join(', ')}. Total de puntos: ${getPoints(playerHand)}. Carta visible del dealer: ${dealerHandValues[0]}`);
+    showMessage(`Tus cartas: ${playerHandValues.join(', ')}. Total de puntos: ${getPoints(playerHand)}. Cartas visibles del dealer: ${dealerHandValues.join(', ')}. Total de puntos del dealer: ${getPoints(dealerHand)}.`);
 };
 
 //
@@ -170,7 +179,14 @@ const playGame = async () => {
             dealerHand = gameState.dealerHand;
             putGameState({ deck, playerHand, dealerHand });
         }
-        showState(playerHand, dealerHand);
+        const defaultDealerCard = {
+            "id": 53,
+            "kind": "Default",
+            "value": "0",
+            "img": "default-2.png"
+        }
+        showState(playerHand, [dealerHand[0], defaultDealerCard]);
+        showImgs(playerHand, [dealerHand[0], defaultDealerCard]);
 
         // Turno del jugador
         await playerTurn();
@@ -179,6 +195,7 @@ const playGame = async () => {
         deck = newState.deck;
         playerHand = newState.playerHand;
         dealerHand = newState.dealerHand;
+        showImgs(playerHand, dealerHand);
         // Turno del dealer
         while (getPoints(dealerHand) < 17) {
             console.log("jugando dealer")
@@ -187,6 +204,7 @@ const playGame = async () => {
             putGameState({ deck, playerHand, dealerHand });
         }
         console.log("termina turno dealer")
+        showImgs(playerHand, dealerHand);
         // Muestra las manos finales
         const playerHandValues = [];
         for (const card of playerHand) {
@@ -293,13 +311,13 @@ const getPlayerGame = () => {
 // addCardImg: Card HTMLElement -> Void
 // Crea y agrega una carta al DOM
 const addCardImg = (card, container) => {
-    const { cardKind, cardValue, cardImg } = card;
+    const { kind, value, img } = card;
     let newDiv = document.createElement('div');
     newDiv.classList.add('col');
     let newImg = document.createElement('img');
-    newImg.src = cardImg;
+    newImg.src = "/img/" + img;
     newImg.classList.add("img-thumbnail");
-    newImg.alt = "Carta " + cardValue + " de " + cardKind;
+    newImg.alt = "Carta " + value + " de " + kind;
     newDiv.appendChild(newImg);
     container.appendChild(newDiv);
 };
@@ -352,3 +370,26 @@ const createDefaultCards = () => {
     dealerCardsDiv.appendChild(divDefault3);
     dealerCardsDiv.appendChild(divDefault4);
 };
+
+// showImgs: [Card] [Card] -> Void
+// Muestra las cartas actuales en el DOM
+const showImgs = (playerHand, dealerHand) => {
+    deleteOldImgs();
+    for (const card of playerHand) {
+        addCardImg(card, playerCardsDiv);
+    }
+    for (const card of dealerHand) {
+        addCardImg(card, dealerCardsDiv);
+    }
+}
+
+// deleteOldImgs: Void -> Void
+// Quita las cartas antiguas en el DOM
+const deleteOldImgs = () => {
+    while (playerCardsDiv.firstChild) {
+        playerCardsDiv.removeChild(playerCardsDiv.firstChild);
+    }
+    while (dealerCardsDiv.firstChild) {
+        dealerCardsDiv.removeChild(dealerCardsDiv.firstChild);
+    }
+}
