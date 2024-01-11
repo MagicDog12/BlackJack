@@ -139,9 +139,9 @@ const mostrarEstado = (manoJugador, manoDealer) => {
 // Juego principal
 //
 
-// jugarPartida: Void -> Void
+// playGame: Void -> Void
 // Simula una partida del juego de Black Jack
-const jugarPartida = async () => {
+const playGame = async () => {
     let main = 'si';
 
     while (main === 'si') {
@@ -211,7 +211,7 @@ const gameInput = document.getElementById('gameInput');
 const gameButton = document.getElementById('gameButton');
 
 // Asignar evento al botón para iniciar el juego
-playButton.addEventListener('click', jugarPartida);
+playButton.addEventListener('click', playGame);
 
 // mostrarMensaje: string -> Void
 // Muestra los mensajes en el historial
